@@ -1,0 +1,47 @@
+grammar org.siauliai.revcom.RevCom with org.eclipse.xtext.xbase.Xbase
+
+generate revCom "http://www.siauliai.org/revcom/RevCom"
+
+RevCom:
+	(components += Component)*
+;
+
+Port:
+	name = ID
+;
+
+Property:
+	name = ID
+;
+
+Event:
+	name = ID
+;
+
+Method:
+	'method' name = ID '('
+		(params += FullJvmFormalParameter(
+			',' params += FullJvmFormalParameter)*)?
+		')' ':' type=JvmTypeReference 
+    body=XBlockExpression
+;
+
+Expression:
+	name = ID
+;
+
+Component:
+	'component' name = ID '{'
+		('provides' (ports += Port)*)?
+		('properties' (properties += Property)*)?
+		('requires' (ports += Port)*)?
+		('fires' (events += Event)*)?
+		('sinks' (events += Event)*)?
+		('methods' (methods += Method)*)?
+		('uses' 'x=' usesExpression = Expression)?
+		('plug' portFrom = Port 'into' portTo = Port)?
+		('compose' '(' composeExpression = Expression ')')?
+		('new' newExpressionA = Expression 'with' newExpressionB = Expression)?
+		// Handle right column
+	'}'
+;

@@ -1,0 +1,25 @@
+grammar org.siauliai.revcom.RevCom with org.eclipse.xtext.common.Terminals
+
+generate revCom "http://www.siauliai.org/revcom/RevCom"
+
+RevCom:
+	(elements += Type)*
+;
+
+Type:
+	DataType | Entity
+;
+
+DataType:
+	'datatype' name = ID
+;
+
+Entity:
+	'entity' name = ID ('extends' superType = [Entity])? '{'
+		(features += Feature)*
+	'}'
+;
+
+Feature:
+    (many ?= 'many')? name = ID ':' type = [Type]
+;

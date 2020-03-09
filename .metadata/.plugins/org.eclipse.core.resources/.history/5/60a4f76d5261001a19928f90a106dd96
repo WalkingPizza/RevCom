@@ -1,0 +1,9 @@
+grammar org.siauliai.revcom.RevCom with org.eclipse.xtext.common.Terminals
+
+generate revCom "http://www.siauliai.org/revcom/RevCom"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
